@@ -1097,7 +1097,15 @@ video { width:100%; height:100%; object-fit:contain; display:block; pointer-even
 .screen[data-layout="desktop"] > .n906-5474 {left:calc(50% - 835.5px);}
 .screen[data-layout="desktop"] > .n953-1268 {left:calc(100% - var(--sidebar-inset) - 1433px);}
 
-.n872-249,.n872-273,.n936-223,.n936-224 {display:none;}
+#mobile-about .n936-223,
+#mobile-about .n936-224 {
+  display:block;
+  height:1.5px;
+  background:#000;
+  z-index:1;
+}
+#mobile-about .n936-223 svg,
+#mobile-about .n936-224 svg { display:none; }
 .n872-274,.n936-221 {overflow:visible;}
 
 .screen[data-layout="desktop"] > .n993-1495 {left:calc(50% - 835.5px);}
@@ -1223,7 +1231,7 @@ dialog.art-viewer { position:fixed; inset:0; margin:0; padding:0; width:100%; he
 /* Revised Figma: Decision 2024 */
 .tv-detail { background:white; overflow-y:auto; overflow-x:hidden; pointer-events:auto; scrollbar-width:none; }
 #desktop-tvchosun {height:982px;}
-#mobile-tvchosun {height:100%;}
+#mobile-tvchosun { width:100%; height:100%; }
 .tv-works-card { overflow:hidden; cursor:pointer; }
 .tv-works-card img { width:100%;height:100%;object-fit:cover; }
 .tv-works-card::after { content:"";position:absolute;inset:0;background:rgba(255,255,255,.7);opacity:0;pointer-events:none;transition:opacity .3s cubic-bezier(0,0,.58,1); }
