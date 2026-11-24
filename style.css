@@ -1243,3 +1243,11 @@ dialog.art-viewer { position:fixed; inset:0; margin:0; padding:0; width:100%; he
 #desktop-tvchosun > .n906-2477,#desktop-tvchosun > .n906-2457 {left:calc(50% - 835.5px);}
 #desktop-tvchosun > .n906-2477 {transform:translate(304px,120px);}
 #desktop-tvchosun > .n906-2457 {transform:translate(1323px,120px);}
+
+/* The mobile artboard is 402 design pixels wide and scales with the stage. */
+#mobile-tvchosun { inset:0; width:402px; height:100%; }
+#mobile-works a.tv-mobile-label { color:inherit; touch-action:manipulation; }
+#mobile-works a[href="#tvchosun"] { touch-action:manipulation; }
+@media (hover:none) {
+  #mobile-works .tv-works-card::before, #mobile-works .tv-works-card::after { content:none; }
+}

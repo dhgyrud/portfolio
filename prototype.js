@@ -46,13 +46,15 @@ stage.addEventListener('click', event => {
   const link = event.target.closest('a[href^="#"]');
   if (!link || event.metaKey || event.ctrlKey || event.shiftKey) return;
   event.preventDefault();
-  if (link.classList.contains('tap-swap') && !link.classList.contains('chosen')) {
+  const opensWork = link.closest('.screen')?.dataset.page === 'works' &&
+    ['#packit', '#wordspan', '#sundaze', '#tvchosun'].includes(link.hash);
+  if (!opensWork && link.classList.contains('tap-swap') && !link.classList.contains('chosen')) {
     active.querySelectorAll('.chosen').forEach(card => card.classList.remove('chosen'));
     link.classList.add('chosen');
     return;
   }
   if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-  displayPage(Number(link.dataset.duration));
+  displayPage(opensWork ? 0 : Number(link.dataset.duration));
 });
 addEventListener('hashchange', () => displayPage());
 addEventListener('resize', () => displayPage());
