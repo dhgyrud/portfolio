@@ -33,6 +33,7 @@ function displayPage(duration = 0) {
     image.src = image.dataset.src;
     image.removeAttribute('data-src');
   }
+  active.querySelectorAll('.tv-gallery video').forEach(video => { video.muted = true; video.play().catch(() => {}); });
   active.scrollTop = 0;
   active.querySelectorAll('.scroll').forEach(area => area.scrollTo(0, 0));
   if (duration && previous && previous.dataset.layout === layout) {
@@ -106,9 +107,11 @@ function openArtwork(art) {
   copy.removeAttribute('tabindex');
   copy.removeAttribute('role');
   copy.removeAttribute('data-enlarge');
+  for (const property of ['left', 'top', 'transform']) copy.style.removeProperty(property);
   copy.classList.add('expanded-art');
   viewer.replaceChildren(copy);
   viewer.showModal();
+  copy.querySelectorAll('video').forEach(video => { video.muted = true; video.currentTime = art.querySelector('video')?.currentTime || 0; video.play().catch(() => {}); });
   fitArtwork();
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches && origin.width && origin.height) {
     const end = copy.getBoundingClientRect();
@@ -131,11 +134,12 @@ addEventListener('resize', fitArtwork);
 addEventListener('hashchange', () => { if (viewer.open) viewer.close(); });
 for (const screen of screens) {
   const page = screen.dataset.page;
-  if (!['packit','sundaze','wordspan'].includes(page)) continue;
+  if (!['packit','sundaze','wordspan','tvchosun'].includes(page)) continue;
   const gallery = [...screen.children].find(layer => layer.querySelector('img'));
   if (!gallery) continue;
   let items;
-  if (page === 'sundaze') items = [...gallery.children].filter(layer => layer.querySelector('img'));
+  if (page === 'tvchosun') items = [...gallery.querySelectorAll('.tv-art')];
+  else if (page === 'sundaze') items = [...gallery.children].filter(layer => layer.querySelector('img'));
   else items = [...gallery.querySelectorAll('.image-clip')].map(clip => clip.parentElement);
   items.forEach((art, index) => {
     art.dataset.enlarge = '';
