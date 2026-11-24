@@ -3,6 +3,7 @@ const screens = [...stage.querySelectorAll('.screen')];
 const phone = matchMedia('(max-width: 767px), (pointer: coarse) and (max-height: 500px) and (max-width: 950px)');
 let active;
 let transition;
+let pendingCardTimer;
 
 function displayPage(duration = 0) {
   const layout = phone.matches ? 'mobile' : 'desktop';
@@ -20,6 +21,8 @@ function displayPage(duration = 0) {
   stage.style.setProperty('--desktop-gutter', gutter + 'px');
   stage.style.setProperty('--sidebar-inset', (33 / scale) + 'px');
   if (next === active) return;
+  clearTimeout(pendingCardTimer);
+  active?.querySelector('.show-feedback')?.classList.remove('show-feedback');
   transition?.cancel();
   for (const screen of screens) screen.classList.remove('leaving', 'current');
   if (active) {
@@ -53,8 +56,23 @@ stage.addEventListener('click', event => {
     link.classList.add('chosen');
     return;
   }
-  if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-  displayPage(opensWork ? 0 : Number(link.dataset.duration));
+  function navigate() {
+    if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+    displayPage(opensWork ? 0 : Number(link.dataset.duration));
+  }
+  clearTimeout(pendingCardTimer);
+  if (link.classList.contains('tv-works-card') &&
+      (phone.matches || matchMedia('(hover: none)').matches)) {
+    const sourceScreen = active;
+    const sourceHash = location.hash;
+    link.classList.add('show-feedback');
+    pendingCardTimer = setTimeout(() => {
+      if (active === sourceScreen && location.hash === sourceHash) navigate();
+      link.classList.remove('show-feedback');
+    }, 140);
+    return;
+  }
+  navigate();
 });
 addEventListener('hashchange', () => displayPage());
 addEventListener('resize', () => displayPage());
