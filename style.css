@@ -1100,7 +1100,7 @@ video { width:100%; height:100%; object-fit:contain; display:block; pointer-even
 #mobile-about .n936-223,
 #mobile-about .n936-224 {
   display:block;
-  height:1.5px;
+  height:1.25px;
   background:#000;
   z-index:1;
 }
